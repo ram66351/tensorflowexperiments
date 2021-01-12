@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tsne"></script>
+
+<script type="text/javascript">
+	// Create some data
+const data = tf.randomUniform([3000,10]);
+const tsneOpt  = tsne.tsne(data);
+
+async function iterativeTsne() {
+  // Get the suggested number of iterations to perform.
+  const knnIterations = tsneOpt.knnIterations();
+  // Do the KNN computation. This needs to complete before we run tsne
+  for(let i = 0; i < knnIterations; ++i){
+    await tsneOpt.iterateKnn();
+    // You can update knn progress in your ui here.
+  }
+
+  
+  const tsneIterations = 1000;
+  for(let i = 0; i < tsneIterations; ++i){
+    await tsneOpt.iterate();
+    // Draw the embedding here...
+    //const coordinates = tsneOpt.coordinates();
+    const coordinates = tsneOpt.coordinates();
+    //coordinates.print();
+    //console.log(coordinates);
+    var a = tsneOpt.coordsArray(true);
+    
+
+  }
+}
+
+iterativeTsne();
+
+	
+</script>
+    <head>
+        <!-- head definitions go here -->
+    </head>
+    <body>
+        <!-- the content goes here -->
+    </body>
+</html>
